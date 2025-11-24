@@ -4,34 +4,24 @@ on:
   push:
     branches:
       - main
-      
+
 env:
-  FULL_IMAGE: ${{ matrix.dockerfile }}:${{ matrix.tagSuffix }}
+  FULL_IMAGE: quay.io/rh_ee_jfont/shiftleft:v1
 
 jobs:
   build-scan-push:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        dockerfile: [dockerfilebasic, dockerfilevulnerable]
-        tagSuffix: [basic, vulnerable]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: List workspace (debug)
-        run: |
-          echo "Files at repo root:"
-          ls -la
-
       - name: Build container image
         run: |
-          echo "Building image $FULL_IMAGE using ${{ matrix.dockerfile }}"
-          docker build -f "${{ matrix.dockerfile }}" -t "$FULL_IMAGE" .
+          docker build -t $FULL_IMAGE .
 
       - name: Scan image with Trivy
-        uses: aquasecurity/trivy-action@master
+	uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.FULL_IMAGE }}
           severity: HIGH,CRITICAL
@@ -43,7 +33,5 @@ jobs:
           docker login quay.io -u "${{ secrets.QUAY_USER }}" -p "${{ secrets.QUAY_PASSWORD }}"
 
       - name: Push image to Quay.io
-        env:
-          FULL_IMAGE: ${{ env.FULL_IMAGE_BASE }}:${{ matrix.tagSuffix }}
         run: |
-          docker push "$FULL_IMAGE"
+          docker push $FULL_IMAGE
