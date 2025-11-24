@@ -5,13 +5,12 @@ on:
     branches:
       - main
 
-
 jobs:
   build-scan-push:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dockerfile: [Dockerfilebasic, Dockerfilevulnerable]
+        dockerfile: [dockerfilebasic, dockerfilevulnerable]
         tagSuffix: [basic, vulnerable]
 
     steps:
