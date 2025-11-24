@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+      
+env:
+  FULL_IMAGE: ${{ matrix.dockerfile }}:${{ matrix.tagSuffix }}
 
 jobs:
   build-scan-push:
@@ -23,8 +26,6 @@ jobs:
           ls -la
 
       - name: Build container image
-        env:
-          FULL_IMAGE: ${{ matrix.dockerfile }}:${{ matrix.tagSuffix }}
         run: |
           echo "Building image $FULL_IMAGE using ${{ matrix.dockerfile }}"
           docker build -f "${{ matrix.dockerfile }}" -t "$FULL_IMAGE" .
