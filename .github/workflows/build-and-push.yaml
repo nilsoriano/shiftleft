@@ -5,20 +5,14 @@ on:
     branches:
       - main
 
-env:
-  FULL_IMAGE_BASE: quay.io/rh_ee_jfont/shiftleft
 
 jobs:
   build-scan-push:
     runs-on: ubuntu-latest
-    
     strategy:
       matrix:
         dockerfile: [Dockerfilebasic, Dockerfilevulnerable]
         tagSuffix: [basic, vulnerable]
-
-    env:
-      FULL_IMAGE: ${{ FULL_IMAGE_BASE }}:${{ matrix.tagSuffix }}
 
     steps:
       - name: Checkout code
@@ -30,6 +24,8 @@ jobs:
           ls -la
 
       - name: Build container image
+        env:
+          FULL_IMAGE: ${{ matrix.dockerfile }}:${{ matrix.tagSuffix }}
         run: |
           echo "Building image $FULL_IMAGE using ${{ matrix.dockerfile }}"
           docker build -f "${{ matrix.dockerfile }}" -t "$FULL_IMAGE" .
@@ -47,5 +43,7 @@ jobs:
           docker login quay.io -u "${{ secrets.QUAY_USER }}" -p "${{ secrets.QUAY_PASSWORD }}"
 
       - name: Push image to Quay.io
+        env:
+          FULL_IMAGE: ${{ env.FULL_IMAGE_BASE }}:${{ matrix.tagSuffix }}
         run: |
           docker push "$FULL_IMAGE"
