@@ -18,7 +18,7 @@ jobs:
         tagSuffix: [basic, vulnerable]
 
     env:
-      FULL_IMAGE: ${{ env.FULL_IMAGE_BASE }}:${{ matrix.tagSuffix }}
+      FULL_IMAGE: ${{ FULL_IMAGE_BASE }}:${{ matrix.tagSuffix }}
 
     steps:
       - name: Checkout code
