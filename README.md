@@ -1,5 +1,6 @@
 <h2><b>⚙ Projecte de shift left security</b></h2>
-I will list each exercise step, and link relevant commits or upload screenshots to showcase each one's output.
+This was done colaboratively by Xavier Bolló, Eric Martín and myself. 
+We will list each exercise step, and link relevant commits or upload screenshots to showcase each one's output.
 
 1. Create empty [quay.io repository](https://quay.io/repository/spareuser/segur_cloud?).
 2. Create quay.io robot with write perms on the aforementioned repository.
@@ -16,5 +17,7 @@ I will list each exercise step, and link relevant commits or upload screenshots 
 
 8. Create `.github/workflows` dir and first `build-and-push.yaml` version on local repo,
 9. and [commit & push](https://github.com/nilsoriano/shiftleft/commit/73ba680f15ea0b95d17e59c469135bbbaf37dbe6) them to remote (this one). This workflow will not run, as the repo does not contain any Dockerfile at this point.
-10. 
+10. Download [Dockerfilebasic](https://github.com/Josep-Andreu/segur_cloud/blob/main/Dockerfilebasic), rename it to Dockerfile, rename the FULL_IMAGE reference in the .yaml file to the targeted quay.io repository,
+11. and push it to GitHub. The [workflow](https://github.com/nilsoriano/shiftleft/actions/runs/19932329532/job/57147472245) follows all the steps, and uploads the image to the [selected target quay repository](https://quay.io/repository/spareuser/segur_cloud?tab=tags).
+12. 
 
