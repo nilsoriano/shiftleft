@@ -21,3 +21,6 @@ We will list each exercise step, and link relevant commits or upload screenshots
 11. and push it to GitHub. The [workflow](https://github.com/nilsoriano/shiftleft/actions/runs/19932329532/job/57147472245) follows all the steps, and uploads the image to the [selected target quay repository](https://quay.io/repository/spareuser/segur_cloud?tab=tags).
 12. Rename Dockerfilebasic to Dockerfile, rename Dockerfilevulnerable to Dockerfile, rerun workflow. It will [fail](https://github.com/nilsoriano/shiftleft/actions/runs/19938311008/job/57169205607), because we've configured the Trivy scan step in a manner that will exit, should any HIGH or CRITICAL vulnerability be found. 
 13. Switch vulnerable dockerfile to basic, and add the SBOM generation, upload and evaluation steps.
+14. SBOM vuln eval doesn't pass all checks, because it detects a non-fixed HIGH vuln in c-ares. The only way I can think of, to make Dockerfilebasic pass all tests, would be to change this step's `--fail-on` flag from high to critical, but this would not match the "fail build on HIGH or CRITICAL vulns" requisite.
+
+Extra: I did manage to upload the [sbom.syft.json](https://github.com/nilsoriano/shiftleft/blob/main/sbom.syft.json) file.
